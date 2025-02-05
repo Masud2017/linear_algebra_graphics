@@ -13,5 +13,11 @@ class Matrix:
         return self.matrix - value.matrix
     def __mul__(self, value):
         return self.matrix * value.matrix
+    def get_transpose(self):
+        return self.matrix.T
+    def get_inverse(self):
+        return np.linalg.inv(self.matrix)
+    def get_determinant(self):
+        return np.linalg.det(self.matrix)
 
     
