@@ -1,5 +1,5 @@
-from CoordMatrix import CoordMatrix
-from obj_parser.objParser import objFiles
+from src.CoordMatrix import CoordMatrix
+from src.libs.objparser.objparser import AnalyzeObject
 class ObjParser(object):
     def __init__(self,filename):
         self.filename = filename
