@@ -1,5 +1,5 @@
 from CoordMatrix import CoordMatrix
-
+from obj_parser.objParser import objFiles
 class ObjParser(object):
     def __init__(self,filename):
         self.filename = filename
