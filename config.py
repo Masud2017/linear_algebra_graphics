@@ -1,3 +1,3 @@
-import sdl2.ext
+# import sdl2.ext
 
-resources = sdl2.ext.Resources(__file__, "resources")
+# resources = sdl2.ext.Resources(__file__, "resources")
