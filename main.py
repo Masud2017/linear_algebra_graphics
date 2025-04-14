@@ -1,13 +1,27 @@
 import pygame
-import math
 import sys
 from  src.Matrix import Matrix
+from pygame_widgets.button import Button
+import pygame_widgets
+from pygame_widgets.slider import Slider
+from pygame_widgets.textbox import TextBox
 # Initialize Pygame
 pygame.init()
 screen_width, screen_height = 800, 600
 screen = pygame.display.set_mode((screen_width, screen_height))
-pygame.display.set_caption("3D Cube from Matrix in Pygame")
+pygame.display.set_caption("Linear Algebra graphics project")
 clock = pygame.time.Clock()
+
+play_auto_button = Button(screen, 20, 50, 100, 50, text='Play Auto', onClick=lambda: print('Play Auto clicked!'))
+rotate_right_and_left_slider = Slider(screen, 20, 120, 200, 20, min=0, max=100, step=1, initial=50)
+rotate_up_and_down_slider = Slider(screen, 20, 275, 200, 20, min=0, max=100, step=1, initial=50)
+zoom_in_and_out_slider = Slider(screen, 20, 430, 200, 20, min=0, max=100, step=1, initial=50)
+rotate_right_and_left_slider.setText('Rotate right and left')
+rotate_up_and_down_slider.setText('Rotate up and down')
+zoom_in_and_out_slider.setText('Zoom in and out')
+pygame.font.init() # you have to call this at the start, 
+my_font = pygame.font.SysFont('Comic Sans MS', 30)
+text_surface = my_font.render('Rotate right and left', False, (0, 0, 0))
 
 # Define the cube's vertices (a list of 3D points)
 vertices = [
@@ -46,7 +60,8 @@ angle = 0
 
 while True:
     # Handle events (like quitting)
-    for event in pygame.event.get():
+    events = pygame.event.get()
+    for event in events:
         if event.type == pygame.QUIT:
             pygame.quit()
             sys.exit()
@@ -56,6 +71,16 @@ while True:
 
     # Clear the screen
     screen.fill((0, 0, 0))
+    pygame_widgets.update(events)
+    
+    play_auto_button.listen(events)
+    rotate_right_and_left_slider.listen(events)
+    rotate_up_and_down_slider.listen(events)
+    screen.blit(text_surface, (20, 90))
+    
+    play_auto_button.draw()
+    rotate_right_and_left_slider.draw()
+    rotate_up_and_down_slider.draw()   
 
     # Transform and project all vertices
     projected_points = []
