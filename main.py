@@ -13,12 +13,14 @@ pygame.display.set_caption("Linear Algebra graphics project")
 clock = pygame.time.Clock()
 
 play_auto_button = Button(screen, 20, 50, 100, 50, text='Play Auto', onClick=lambda: print('Play Auto clicked!'))
-rotate_right_and_left_slider = Slider(screen, 20, 120, 200, 20, min=0, max=100, step=1, initial=50)
-rotate_up_and_down_slider = Slider(screen, 20, 275, 200, 20, min=0, max=100, step=1, initial=50)
-zoom_in_and_out_slider = Slider(screen, 20, 430, 200, 20, min=0, max=100, step=1, initial=50)
-rotate_right_and_left_slider.setText('Rotate right and left')
-rotate_up_and_down_slider.setText('Rotate up and down')
-zoom_in_and_out_slider.setText('Zoom in and out')
+rotate_x_text_box = TextBox(screen, 20, 120, 280, 25, fontSize=15, borderColour=(0, 0, 0), colour=(255, 255, 255), textColour=(0, 0, 0))
+rotate_right_and_left_slider = Slider(screen, 20,190, 200, 20, min=0, max=100, step=1, initial=50)
+rotate_y_text_box = TextBox(screen, 20, 230, 280, 25, fontSize=15, borderColour=(0, 0, 0), colour=(255, 255, 255), textColour=(0, 0, 0))
+rotate_up_and_down_slider = Slider(screen, 20, 280, 200, 20, min=0, max=100, step=1, initial=50)
+zoom_text_box = TextBox(screen, 20, 310, 280, 25, fontSize=15, borderColour=(0, 0, 0), colour=(255, 255, 255), textColour=(0, 0, 0))
+zoom_in_and_out_slider = Slider(screen, 20, 350, 200, 20, min=0, max=100, step=1, initial=50)
+shear_text_box = TextBox(screen, 20, 380, 280, 25, fontSize=15, borderColour=(0, 0, 0), colour=(255, 255, 255), textColour=(0, 0, 0))
+shear_slider = Slider(screen, 20, 420, 200, 20, min=0, max=100, step=1, initial=50)
 pygame.font.init() # you have to call this at the start, 
 my_font = pygame.font.SysFont('Comic Sans MS', 30)
 text_surface = my_font.render('Rotate right and left', False, (0, 0, 0))
@@ -43,7 +45,6 @@ edges = [
 ]
 
 
-# Perspective projection: Converts 3D coordinates into 2D coordinates.
 def project(point, win_width, win_height, fov, viewer_distance):
     x, y, z = point
     factor = fov / (viewer_distance + z)
@@ -70,7 +71,7 @@ while True:
     angle += 0.01
 
     # Clear the screen
-    screen.fill((0, 0, 0))
+    screen.fill(color = pygame.Color(44,66,43))
     pygame_widgets.update(events)
     
     play_auto_button.listen(events)
@@ -81,6 +82,11 @@ while True:
     play_auto_button.draw()
     rotate_right_and_left_slider.draw()
     rotate_up_and_down_slider.draw()   
+    rotate_x_text_box.setText("Rotate in x axis")
+    rotate_y_text_box.setText("Rotate in y axis")
+    zoom_text_box.setText("Zoom in and out")
+    shear_text_box.setText("Shear ")
+    
 
     # Transform and project all vertices
     projected_points = []
