@@ -5,6 +5,9 @@ from pygame_widgets.button import Button
 import pygame_widgets
 from pygame_widgets.slider import Slider
 from pygame_widgets.textbox import TextBox
+
+from src.operations import operations
+from utils.util import apply_to_vertex,init_projection
 # Initialize Pygame
 pygame.init()
 screen_width, screen_height = 800, 600
@@ -86,6 +89,10 @@ viewer_distance = 4  # How far the viewer is from the screen
 angle = 0
 
 
+projected_points = []
+
+init_projection(projected_points= projected_points, fov= fov, viewer_distance= viewer_distance,vertices= vertices)
+
 while True:
     # Handle events (like quitting)
     events = pygame.event.get()
@@ -103,7 +110,12 @@ while True:
             
             if event.key == pygame.K_UP:
                 # translate down
-                print("UP")
+                projected_points = apply_to_vertex(vertices=vertices,
+                                                   fov = fov,
+                                                   viewer_distance=viewer_distance,
+                                                   factor = translate_x_slider.getValue(),
+                                                   projected_points=projected_points,
+                                                   operation_type=operations.TRANSLATE_X)
                 
             if event.key == pygame.K_DOWN:
                 print("down")
@@ -137,9 +149,7 @@ while True:
 
     angle += 0.01
     
-
-
-    projected_points = []
+    
     # for vertex in vertices:
     #     # Apply rotations
     #     rotated = vertex
