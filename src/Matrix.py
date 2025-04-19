@@ -30,13 +30,13 @@ class Matrix:
         return (new_x, new_y, z)
 
     @staticmethod
-    def zoomIn(point,angle):
+    def zoomIn(point, zoom_factor):
         x, y, z = point
-        cos_theta = math.cos(angle)
-        sin_theta = math.sin(angle)
-        new_x = x * cos_theta - y * sin_theta
-        new_y = x * sin_theta + y * cos_theta
-        return (new_x, new_y, z)
+        # Scale by zoom factor greater than 1 (e.g., 1.2)
+        new_x = x * zoom_factor
+        new_y = y * zoom_factor
+        new_z = z * zoom_factor
+        return (new_x, new_y, new_z)
     
     @staticmethod
     def zoomOut(point,angle):
@@ -53,3 +53,24 @@ class Matrix:
         shear_factor = math.tan(angle)
         new_x = x + shear_factor * y
         return (new_x, y, z)
+    @staticmethod
+    def shearY(point, angle):
+        x, y, z = point
+        shear_factor = math.tan(angle)
+        new_y = y + shear_factor * x
+        return (x, new_y, z)
+    @staticmethod
+    def shearZ(point, angle):
+        x, y, z = point
+        shear_factor = math.tan(angle)
+        new_z = z + shear_factor * x
+        return (x, y, new_z)
+    
+    
+    @staticmethod
+    def translate(point, dx, dy, dz):
+        x, y, z = point
+        new_x = x + dx
+        new_y = y + dy
+        new_z = z + dz
+        return (new_x, new_y, new_z)
