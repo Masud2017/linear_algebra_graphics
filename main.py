@@ -15,6 +15,11 @@ screen = pygame.display.set_mode((screen_width, screen_height))
 pygame.display.set_caption("Linear Algebra graphics project")
 clock = pygame.time.Clock()
 
+
+BUTTON_POS = 5
+ZOOM_STATE = 5
+
+
 # constants
 play_auto = False
 
@@ -79,6 +84,14 @@ faces = [
     (0, 3, 7, 4)   # left face
 ]
 
+face_colors = [
+    (255, 0, 0),     # Red        - back face
+    (0, 255, 0),     # Green      - front face
+    (0, 0, 255),     # Blue       - bottom face
+    (255, 255, 0),   # Yellow     - top face
+    (255, 0, 255),   # Magenta    - right face
+    (0, 255, 255)    # Cyan       - left face
+]
 
 
 # Parameters for projection
@@ -97,28 +110,68 @@ while True:
     # Handle events (like quitting)
     events = pygame.event.get()
     for event in events:
+        mod = pygame.key.get_mods()
         if event.type == pygame.KEYDOWN:
             if event.key == pygame.K_LEFT:
-                # translate down
-                print("left")
-                if not play_auto:
-                    pass
+                print("translating x axis")
+                projected_points = apply_to_vertex(vertices=vertices,
+                                                   fov = fov,
+                                                   viewer_distance=viewer_distance,
+                                                   factor = BUTTON_POS,
+                                                   projected_points=projected_points,
+                                                   operation_type=operations.TRANSLATE_X)
+                BUTTON_POS -= 0.7
+                print(f"New value of up button pos : {BUTTON_POS}")
             if event.key == pygame.K_RIGHT:
-                # translate down
-                print("right")
+                # translate right
+                print("translating x axis")
+                projected_points = apply_to_vertex(vertices=vertices,
+                                                   fov = fov,
+                                                   viewer_distance=viewer_distance,
+                                                   factor = BUTTON_POS,
+                                                   projected_points=projected_points,
+                                                   operation_type=operations.TRANSLATE_X)
+                BUTTON_POS += 0.7
+                print(f"New value of up button pos : {BUTTON_POS}")
                 
             
             if event.key == pygame.K_UP:
                 # translate down
+                print("translating y axis")
                 projected_points = apply_to_vertex(vertices=vertices,
                                                    fov = fov,
                                                    viewer_distance=viewer_distance,
-                                                   factor = translate_x_slider.getValue(),
+                                                   factor = BUTTON_POS,
                                                    projected_points=projected_points,
-                                                   operation_type=operations.TRANSLATE_X)
+                                                   operation_type=operations.TRANSLATE_Y)
+                BUTTON_POS += 0.7
+                print(f"New value of up button pos : {BUTTON_POS}")
                 
             if event.key == pygame.K_DOWN:
-                print("down")
+                print("translating y axis")
+                projected_points = apply_to_vertex(vertices=vertices,
+                                                   fov = fov,
+                                                   viewer_distance=viewer_distance,
+                                                   factor = BUTTON_POS,
+                                                   projected_points=projected_points,
+                                                   operation_type=operations.TRANSLATE_Y)
+                BUTTON_POS -= 0.7
+                print(f"New value of up button pos : {BUTTON_POS}")
+                
+                
+            # if  event.key == pygame.K_z and mod & pygame.mouse.get and mod & pygame.KMOD_CTRL:
+            if mod & pygame.KMOD_CTRL and event.type == pygame.MOUSEWHEEL:
+                print("Zooming in...")
+                projected_points = apply_to_vertex(vertices=vertices,
+                                                   fov = fov,
+                                                   viewer_distance=viewer_distance,
+                                                   factor = pygame.mouse.get_rel(),
+                                                   projected_points=projected_points,
+                                                   operation_type=operations.ZOOM)
+                
+                ZOOM_STATE += 3
+
+
         if event.type == pygame.QUIT:
             pygame.quit()
             sys.exit()
@@ -145,46 +198,7 @@ while True:
     translate_x_text_box.setText("Translate x axis")
     translate_y_text_box.setText("Translate y axis")
 
-    
-
     angle += 0.01
-    
-    
-    # for vertex in vertices:
-    #     # Apply rotations
-    #     rotated = vertex
-    #     if play_auto:
-    #         rotated = Matrix.rotateX(vertex, angle)
-    #         rotated = Matrix.rotateY(rotated, angle)
-    #         rotated = Matrix.rotateZ(rotated, angle)
-    #         # rotated = Matrix.zoomIn(rotated, zoom_in_and_out_slider.getValue())
-    #         rotated = Matrix.shearX(rotated,shear_slider.getValue())
-    #         rotated = Matrix.zoomIn(rotated,zoom_in_and_out_slider.getValue())
-    #         rotated = Matrix.translate(rotated, translate_x_slider.getValue(), 4,4)
-    #         rotated = Matrix.translate(rotated,4,translate_y_slider.getValue(), 4)
-    #         print(f"VAlue of hte slider is : {shear_slider.getValue()}")
-            
-            
-        
-    #     # Project the 3D point to 2D screen coordinates
-    #     projected = project(rotated, screen_width, screen_height, fov, viewer_distance)
-    #     projected_points.append(projected)
-
-    # Draw the edges by connecting the vertices
-    # for edge in edges:
-    #     start, end = edge
-    #     # pygame.draw.line(screen, (255, 255, 255), projected_points[start], projected_points[end], 2)
-    #     pygame.draw.polygon(screen, (255,255,255), [projected_points[start], projected_points[end]],2)
-    
-    # Draw the filled faces
-    face_colors = [
-        (255, 0, 0),     # Red        - back face
-        (0, 255, 0),     # Green      - front face
-        (0, 0, 255),     # Blue       - bottom face
-        (255, 255, 0),   # Yellow     - top face
-        (255, 0, 255),   # Magenta    - right face
-        (0, 255, 255)    # Cyan       - left face
-    ]
 
     for i, face in enumerate(faces):
         point_list = [projected_points[i] for i in face]

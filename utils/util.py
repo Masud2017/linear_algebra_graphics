@@ -24,7 +24,7 @@ def apply_to_vertex(vertices,
                     projected_points:list = [],
                     screen_width = 800,
                     screen_height = 800,operation_type:operations = operations.TRANSLATE_X):
-    
+    projected_points = []
     for vertex in vertices:
         rotated = vertex
         
@@ -47,7 +47,6 @@ def apply_to_vertex(vertices,
             
         
         # Project the 3D point to 2D screen coordinates
-        projected = project(rotated, screen_width, screen_height, fov, viewer_distance)
+        projected = project(point = rotated, win_width = screen_width, win_height= screen_height, fov= fov, viewer_distance=viewer_distance)
         projected_points.append(projected)
-        
     return projected_points

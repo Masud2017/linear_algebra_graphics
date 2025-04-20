@@ -74,3 +74,9 @@ class Matrix:
         new_y = y + dy
         new_z = z + dz
         return (new_x, new_y, new_z)
+    
+    @staticmethod
+    def mirror_x(point):
+        point[1][1] = - point[1][1]
+        point[2][2] = - point[2][2]
+        return point
