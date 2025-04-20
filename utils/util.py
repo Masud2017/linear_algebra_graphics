@@ -50,3 +50,27 @@ def apply_to_vertex(vertices,
         projected = project(point = rotated, win_width = screen_width, win_height= screen_height, fov= fov, viewer_distance=viewer_distance)
         projected_points.append(projected)
     return projected_points
+
+
+'''
+This method is intended for auto rotation matrix only
+'''
+def apply_to_vertex_auto(vertices : list,angle:int = 0, 
+                         screen_width = 800,
+                         screen_height = 800,
+                         fov:int = 0,
+                         viewer_distance:int = 0) -> list:
+    projected_points = []
+    # rotated = vertices
+    for vertex in vertices:
+        #  rotated = vertex
+         # Apply rotations
+         rotated = Matrix.rotateX(vertex, angle)
+         rotated = Matrix.rotateY(rotated, angle)
+         rotated = Matrix.rotateZ(rotated, angle)
+         
+         # Project the 3D point to 2D screen coordinates
+         projected = project(rotated, screen_width, screen_height, fov, viewer_distance)
+         projected_points.append(projected)
+ 
+    return projected_points
