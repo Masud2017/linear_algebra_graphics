@@ -127,8 +127,7 @@ while True:
                 if event.key == pygame.K_RIGHT:
                     # translate right
                     print("translating x axis")
-                    if angle == 0:
-                        angle = 0.1
+                 
                     projected_points = apply_to_vertex(vertices=vertices,
                                                     fov = fov,
                                                     viewer_distance=viewer_distance,

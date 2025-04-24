@@ -31,11 +31,7 @@ def stop_auto():
     global play_auto
     play_auto = False
 play_auto_button = None
-if play_auto:
-    play_auto_button = Button(screen, 20, 50, 100, 50, text='Stop Auto', onClick=lambda: stop_auto())
-    
-else:
-    play_auto_button = Button(screen, 20, 50, 100, 50, text='Play Auto', onClick=lambda: start_auto())
+
 
 
 
@@ -89,10 +85,23 @@ viewer_distance = 4  # How far the viewer is from the screen
 # Main loop variables
 angle = 0
 
+projected_points = []
+init_projection(vertices=vertices, fov = fov, viewer_distance=viewer_distance, projected_points=projected_points)
+
 while True:
+    if play_auto:
+        play_auto_button = Button(screen, 20, 50, 100, 50, text='Stop Auto', onClick=lambda: stop_auto())
+    
+    else:
+        play_auto_button = Button(screen, 20, 50, 100, 50, text='Play Auto', onClick=lambda: start_auto())
+    
+    
+    # initializing the proejcted_points
+    
     # Handle events (like quitting)
     events = pygame.event.get()
     for event in events:
+        
         mod = pygame.key.get_mods()
         if not play_auto:
             if event.type == pygame.KEYDOWN:
@@ -102,6 +111,7 @@ while True:
                                                     fov = fov,
                                                     viewer_distance=viewer_distance,
                                                     factor = BUTTON_POS,
+                                                    angle = angle,
                                                     projected_points=projected_points,
                                                     operation_type=operations.TRANSLATE_X)
                     BUTTON_POS -= 0.7
@@ -174,9 +184,9 @@ while True:
     pygame_widgets.update(events)
     
     angle += 0.01
-    
-    if not play_auto:
-        init_projection(vertices=vertices, fov = fov, viewer_distance=viewer_distance,projected_points=projected_points)
+    # projected_points = []
+    # if not play_auto:
+    #     init_projection(vertices=vertices, fov = fov, viewer_distance=viewer_distance,projected_points=projected_points)
     play_auto_button.listen(events)
     if play_auto:
         projected_points = []
@@ -188,6 +198,14 @@ while True:
             
             projected_points.append(project(rotated, fov = fov, viewer_distance=viewer_distance,win_height=screen_height, win_width=screen_width))
         
+        for i, face in enumerate(faces):
+            point_list = [projected_points[i] for i in face]
+            pygame.draw.polygon(screen, face_colors[i], point_list)
+            # 3. Draw small rectangles at each projected vertex
+        for point in projected_points:
+            pygame.draw.rect(screen, (255, 255, 255), pygame.Rect(point[0]-3, point[1]-3, 6, 6))
+
+    else:
         for i, face in enumerate(faces):
             point_list = [projected_points[i] for i in face]
             pygame.draw.polygon(screen, face_colors[i], point_list)

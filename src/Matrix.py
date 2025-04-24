@@ -68,11 +68,23 @@ class Matrix:
     
     
     @staticmethod
-    def translate(point, dx, dy, dz):
+    def translate(point, dx:int = 0, dy:int = 0, dz:int = 0):
         x, y, z = point
-        new_x = x + dx
-        new_y = y + dy
-        new_z = z + dz
+        new_x = 0
+        new_y = 0
+        new_z = 0
+        if dx != 0:
+            new_x = x + dx
+        else:
+            new_x = x
+        if dy != 0:
+            new_y = y + dy
+        else:
+            new_y = y
+        if dz != 0:
+            new_z = z + dz
+        else:
+            new_z = z
         return (new_x, new_y, new_z)
     
     @staticmethod
